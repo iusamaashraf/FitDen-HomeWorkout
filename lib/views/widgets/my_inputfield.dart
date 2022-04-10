@@ -6,14 +6,17 @@ class MyInputField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     required this.validator,
+    this.isObsure = false,
     Key? key,
   }) : super(key: key);
   final String hintText;
   final TextEditingController controller;
   final String Function(String? val) validator;
+  final bool isObsure;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: isObsure,
       validator: validator,
       controller: controller,
       decoration: InputDecoration(

@@ -5,6 +5,7 @@ import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/constants/icons.dart';
 import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
+import 'package:fitden_homeworkout/views/pages/forgot_pass/forgt_pass_page.dart';
 import 'package:fitden_homeworkout/views/pages/sign_up/sign_up_page.dart';
 import 'package:fitden_homeworkout/views/widgets/auth_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
@@ -92,9 +93,10 @@ class SignInPage extends StatelessWidget {
                                 SizedBox(
                                     height: 1.5 * SizeConfig.heightMultiplier),
                                 MyInputField(
+                                  isObsure: true,
                                   controller: passwordController,
                                   hintText: 'Password',
-                                 // labelText: 'Password',
+                                  // labelText: 'Password',
                                   validator: (val) {
                                     return '';
                                   },
@@ -141,7 +143,6 @@ class SignInPage extends StatelessWidget {
                                             .textTheme
                                             .subtitle2!
                                             .copyWith(color: Colors.white)),
-
                                     GestureDetector(
                                       onTap: () {
                                         Get.to(() => SignUpPage());
@@ -159,7 +160,11 @@ class SignInPage extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.to(
+                                        () => ForgotPassPage(),
+                                      );
+                                    },
                                     child: Text("Forgot your password?",
                                         style: Theme.of(context)
                                             .textTheme
