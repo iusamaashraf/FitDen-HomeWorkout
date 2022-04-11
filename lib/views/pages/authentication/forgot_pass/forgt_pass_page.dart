@@ -1,13 +1,10 @@
 import 'dart:ui';
-
-import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_inputfield.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ForgotPassPage extends StatelessWidget {
   ForgotPassPage({Key? key}) : super(key: key);

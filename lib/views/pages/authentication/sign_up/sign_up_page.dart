@@ -2,22 +2,20 @@ import 'dart:ui';
 
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
-import 'package:fitden_homeworkout/constants/icons.dart';
 import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
-import 'package:fitden_homeworkout/views/pages/forgot_pass/forgt_pass_page.dart';
-import 'package:fitden_homeworkout/views/pages/sign_up/sign_up_page.dart';
-import 'package:fitden_homeworkout/views/widgets/auth_button.dart';
+import 'package:fitden_homeworkout/views/pages/authentication/sign_up/privacy_policay.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_inputfield.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignInPage extends StatelessWidget {
-  SignInPage({Key? key}) : super(key: key);
+class SignUpPage extends StatelessWidget {
+  SignUpPage({Key? key}) : super(key: key);
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  final TextEditingController usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +45,7 @@ class SignInPage extends StatelessWidget {
                         padding: EdgeInsets.only(
                             left: 10 * SizeConfig.widthMultiplier,
                             bottom: 3 * SizeConfig.heightMultiplier),
-                        child: Text('Log in',
+                        child: Text('Sign up',
                             style: Theme.of(context)
                                 .textTheme
                                 .headline4!
@@ -82,10 +80,44 @@ class SignInPage extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Wrap(
+                                  children: [
+                                    Text(
+                                      "Looks like you dont't have an account.Let's create a new account e.g",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                    Text(
+                                      "jane.doe@gmail.com",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                    height: 1 * SizeConfig.heightMultiplier),
+                                MyInputField(
+                                  controller: usernameController,
+                                  hintText: 'Username',
+                                  //  labelText: 'Email',
+                                  validator: (val) {
+                                    return '';
+                                  },
+                                ),
+                                SizedBox(
+                                    height: 1.5 * SizeConfig.heightMultiplier),
                                 MyInputField(
                                   controller: emailController,
                                   hintText: 'Email',
-                                  //labelText: 'Email',
+                                  //  labelText: 'Email',
                                   validator: (val) {
                                     return '';
                                   },
@@ -96,58 +128,58 @@ class SignInPage extends StatelessWidget {
                                   isObsure: true,
                                   controller: passwordController,
                                   hintText: 'Password',
-                                  // labelText: 'Password',
+                                  //  labelText: 'Email',
                                   validator: (val) {
                                     return '';
                                   },
                                 ),
                                 SizedBox(
+                                    height: 1 * SizeConfig.heightMultiplier),
+                                RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          'By selecting Agree and continue to ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.to(
+                                            () => const PrivacyPolicy(),
+                                          );
+                                        },
+                                      text: 'Privacy policy',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(color: primaryColor),
+                                    ),
+                                  ]),
+                                ),
+                                SizedBox(
                                     height: 1.5 * SizeConfig.heightMultiplier),
                                 Mybutton(
                                   onTap: () {},
-                                  text: "Continue",
+                                  text: "Agree and continue",
                                 ),
                                 SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier),
-                                Text(
-                                  'or',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
-                                ),
-                                SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier),
-                                AuthButton(
-                                  onTap: () {},
-                                  text: 'Continue with Facebook',
-                                  icon: fb,
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier),
-                                AuthButton(
-                                  onTap: () {},
-                                  text: 'Continue with Google',
-                                  icon: google,
-                                  color: primaryColor,
-                                ),
-                                SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier),
+                                    height: 1.5 * SizeConfig.heightMultiplier),
                                 Row(
                                   children: [
-                                    Text("Didn't have an account? ",
+                                    Text('Already have an account? ',
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle2!
                                             .copyWith(color: Colors.white)),
                                     GestureDetector(
                                       onTap: () {
-                                        Get.to(() => SignUpPage());
+                                        Get.back();
                                       },
-                                      child: Text("Sign up",
+                                      child: Text("Sign in",
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2!
@@ -155,23 +187,6 @@ class SignInPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(
-                                        () => ForgotPassPage(),
-                                      );
-                                    },
-                                    child: Text("Forgot your password?",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2!
-                                            .copyWith(color: primaryColor)),
-                                  ),
-                                )
                               ],
                             ),
                           ),
