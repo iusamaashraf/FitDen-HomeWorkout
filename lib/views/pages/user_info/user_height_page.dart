@@ -176,7 +176,7 @@ class _UserheightPageState extends State<UserheightPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Enter your height',
+                'Select height',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1!
@@ -355,7 +355,7 @@ class _UserheightPageState extends State<UserheightPage>
               ),
               SizedBox(height: 20 * SizeConfig.heightMultiplier),
               Text(
-                'Enter your weight in kg',
+                'Select Weight',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1!

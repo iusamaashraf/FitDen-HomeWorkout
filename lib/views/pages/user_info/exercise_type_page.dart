@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:fitden_homeworkout/constants/consts.dart';
+import 'package:fitden_homeworkout/main.dart';
 import 'package:fitden_homeworkout/models/exercise_category_model.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
@@ -48,6 +49,7 @@ class _ExerciseTypePageState extends State<ExerciseTypePage> {
             FractionallySizedBox(
               heightFactor: 0.55,
               child: PageView.builder(
+                scrollBehavior: MyBehavior(),
                 onPageChanged: (int page) {
                   setState(() {
                     _currentIndex = page;
