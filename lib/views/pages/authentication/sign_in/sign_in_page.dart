@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/constants/icons.dart';
-import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/forgot_pass/forgt_pass_page.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_up/sign_up_page.dart';

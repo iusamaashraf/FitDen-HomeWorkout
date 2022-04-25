@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:fitden_homeworkout/constants/consts.dart';
-import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_inputfield.dart';

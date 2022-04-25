@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
-import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_up/privacy_policay.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
