@@ -18,7 +18,7 @@ class _RootPageState extends State<RootPage> {
   int currentTab = 0;
   final List<Widget> screens = [
     const ClassicPage(),
-    DailyPage(),
+    const DailyPage(),
     const MePage(),
   ];
 
@@ -30,7 +30,7 @@ class _RootPageState extends State<RootPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
         onPressed: () {
-          Get.to(() => DailyPage());
+          Get.to(() => const DailyPage());
         },
         child: const Icon(Icons.library_books_outlined),
       ),

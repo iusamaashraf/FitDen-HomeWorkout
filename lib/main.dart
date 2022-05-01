@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
 
               //  builder: DevicePreview.appBuilder,
               home: const SplashPage(),
+              //home: const Dashboard(),
             );
           },
         );

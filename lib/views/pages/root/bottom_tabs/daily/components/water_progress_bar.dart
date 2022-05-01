@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 // ignore: constant_identifier_names
 const two_pi = 3.14 * 2;
 
-class CircularProgressBar extends StatelessWidget {
-  CircularProgressBar({Key? key}) : super(key: key);
+class WaterCircularProgressBar extends StatelessWidget {
+  WaterCircularProgressBar({Key? key}) : super(key: key);
   final BasicController con = Get.put(BasicController());
   @override
   Widget build(BuildContext context) {
