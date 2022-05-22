@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "877486090298",
+    "project_id": "fitden-d2828",
+    "storage_bucket": "fitden-d2828.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877486090298:android:a63fb90b4ea63212626d03",
+        "android_client_info": {
+          "package_name": "com.fitden.fitden"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877486090298-u68v7fo4tvfccp13qj57suqou3il3vj6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ2U7lNaI8k0epjVIn2FXdpPNoRGSrGAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877486090298-u68v7fo4tvfccp13qj57suqou3il3vj6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "877486090298-5dj967j8utsggvhvo7j58qu7rsoi89eo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fitden.fitden"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.fitden_homeworkout
+package com.fitden.fitden
 
 import io.flutter.embedding.android.FlutterActivity
 

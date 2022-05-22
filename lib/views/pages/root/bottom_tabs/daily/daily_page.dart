@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/water_tracker_button.dart';
 import 'step_counter/components/dashboard_card.dart';
+import 'water_intake/water_intake_history.dart';
 
 class DailyPage extends StatefulWidget {
   const DailyPage({Key? key}) : super(key: key);
@@ -41,119 +42,160 @@ class _DailyPageState extends State<DailyPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SizedBox.expand(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                //This section for water intake in a day
-                Container(
-                  margin: const EdgeInsets.all(defaultPadding),
-                  height: 40 * SizeConfig.heightMultiplier,
-                  width: 100 * SizeConfig.widthMultiplier,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 18,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(
-                      defaultBorderRadius,
+          child: Column(
+            children: [
+              //This section for water intake in a day
+              Container(
+                margin: const EdgeInsets.all(defaultPadding),
+                height: 40 * SizeConfig.heightMultiplier,
+                width: 100 * SizeConfig.widthMultiplier,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 18,
                     ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Water Tracker',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                      SizedBox(
-                        height: 120,
-                        width: 120,
-                        child: WaterCircularProgressBar(),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          WaterTrackerButton(
-                            onTap: () {
-                              con.decrement();
-                            },
-                            text: '-',
-                          ),
-                          SizedBox(width: 9 * SizeConfig.widthMultiplier),
-                          WaterTrackerButton(
-                            onTap: () {
-                              con.increment();
-                            },
-                            text: '+',
-                          ),
-                        ],
-                      ),
-                    ],
+                  ],
+                  borderRadius: BorderRadius.circular(
+                    defaultBorderRadius,
                   ),
                 ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    Text('Water Tracker',
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                    SizedBox(
+                      height: 120,
+                      width: 120,
+                      child: WaterCircularProgressBar(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        WaterTrackerButton(
+                          onTap: () {
+                            con.decrement();
+                          },
+                          text: '-',
+                        ),
+                        SizedBox(width: 9 * SizeConfig.widthMultiplier),
+                        WaterTrackerButton(
+                          onTap: () {
+                            con.increment();
+                          },
+                          text: '+',
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: InkWell(
+                          onTap: () {
+                            //water remainder detail button
+                            Get.to(() => const WaterInktakeHistoryPage());
+                          },
+                          child: Text(
+                            'See Details',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-                SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                //This section for step counter
-                Container(
-                  margin: const EdgeInsets.all(defaultPadding),
-                  height: 40 * SizeConfig.heightMultiplier,
-                  width: 100 * SizeConfig.widthMultiplier,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 18,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(
-                      defaultBorderRadius,
+              SizedBox(height: 1 * SizeConfig.heightMultiplier),
+              //This section for step counter
+              Container(
+                margin: const EdgeInsets.all(defaultPadding),
+                height: 45 * SizeConfig.heightMultiplier,
+                width: 100 * SizeConfig.widthMultiplier,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 18,
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      StreamBuilder<AccelerometerEvent>(
-                        stream: SensorsPlatform.instance.accelerometerEvents,
-                        builder: (context, snapShort) {
-                          if (snapShort.hasData) {
-                            x = snapShort.data!.x;
-                            y = snapShort.data!.y;
-                            z = snapShort.data!.z;
-                            distance = getValue(x, y, z);
-                            if (distance > 20) {
-                              steps++;
-                            }
-                            calories = calculateCalories(steps);
-                            miles = calculateMiles(steps);
-                          }
-                          return
-                              // ignore: sized_box_for_whitespace
-                              Container(
-                            height: 300,
-                            width: 400,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  DashboardCard(
-                                      steps, miles, calories, duration),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                  ],
+                  borderRadius: BorderRadius.circular(
+                    defaultBorderRadius,
                   ),
                 ),
-              ],
-            ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Text('Step Counter',
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.bold)),
+                    StreamBuilder<AccelerometerEvent>(
+                      stream: SensorsPlatform.instance.accelerometerEvents,
+                      builder: (context, snapShort) {
+                        if (snapShort.hasData) {
+                          x = snapShort.data!.x;
+                          y = snapShort.data!.y;
+                          z = snapShort.data!.z;
+                          distance = getValue(x, y, z);
+                          if (distance > 20) {
+                            steps++;
+                          }
+                          calories = calculateCalories(steps);
+                          miles = calculateMiles(steps);
+                        }
+                        return
+                            // ignore: sized_box_for_whitespace
+                            Container(
+                          height: 300,
+                          width: 400,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                DashboardCard(steps, miles, calories, duration),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8, right: 8),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: InkWell(
+                          onTap: () {
+                            //Step Counter detail button
+                          },
+                          child: Text(
+                            'See Details',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
-import 'package:fitden_homeworkout/views/pages/user_info/experiance_level_page.dart';
+import 'package:fitden_homeworkout/views/pages/user_info/exercise_type_page.dart';
 import 'package:fitden_homeworkout/views/widgets/floating_action_btn.dart';
 import 'package:fitden_homeworkout/views/widgets/my_app_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -159,7 +159,8 @@ class _UserheightPageState extends State<UserheightPage>
     return Scaffold(
         floatingActionButton: FloatingActionBtn(
             onPressed: () {
-              Get.to(() => const ExperianceLvelPage());
+              // Get.to(() => const ExperianceLvelPage());
+              Get.to(() => const ExerciseTypePage());
             },
             text: 'Continue'),
         backgroundColor: Colors.white,

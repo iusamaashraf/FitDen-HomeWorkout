@@ -31,10 +31,25 @@ class MyApp extends StatelessWidget {
                 return ScrollConfiguration(
                     behavior: MyBehavior(), child: child!);
               },
+              // builder: (context, widget) => ResponsiveWrapper.builder(
+              //   BouncingScrollWrapper.builder(context, widget!),
+              //   maxWidth: 1200,
+              //   minWidth: 360,
+              //   defaultScale: true,
+              //   breakpoints: [
+              //     const ResponsiveBreakpoint.resize(800, name: MOBILE),
+              //     const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+              //     const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+              //     const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+              //     const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+              //   ],
+              // ),
               debugShowCheckedModeBanner: false,
 
               //  builder: DevicePreview.appBuilder,
               home: const SplashPage(),
+              // home: const RestPage(),
+
               //home: const Dashboard(),
             );
           },
