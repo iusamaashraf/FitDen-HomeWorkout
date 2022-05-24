@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fitden_homeworkout/constants/images.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
+import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
 import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Timer(const Duration(seconds: 6), () {
-      Get.offAll(() => const UserAgePage());
+      Get.offAll(() => SignInPage());
     });
     super.initState();
   }

@@ -1,7 +1,7 @@
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
+import 'package:fitden_homeworkout/controllers/user_controller.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
-import 'package:fitden_homeworkout/views/pages/user_info/exercise_type_page.dart';
 import 'package:fitden_homeworkout/views/widgets/floating_action_btn.dart';
 import 'package:fitden_homeworkout/views/widgets/my_app_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,11 +10,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 import 'package:get/get.dart';
 
+import 'exercise_type_page.dart';
+
 enum HeightUnit { ft, cm }
 
+// ignore: must_be_immutable
 class UserheightPage extends StatefulWidget {
-  const UserheightPage({Key? key}) : super(key: key);
-
+  UserheightPage({Key? key, required this.age}) : super(key: key);
+  String age;
   @override
   State<UserheightPage> createState() => _UserheightPageState();
 }
@@ -33,9 +36,15 @@ class _UserheightPageState extends State<UserheightPage>
   late SequenceAnimation sequenceAnimation1;
   late AnimationController _controller2;
   late SequenceAnimation sequenceAnimation2;
-
+  int? ft;
+  int? inches;
+  int? total;
   @override
   void initState() {
+    ft = 0;
+    inches = 0;
+    total = ft! + inches!;
+
     super.initState();
     _controller1 = AnimationController(
       vsync: this,
@@ -151,16 +160,26 @@ class _UserheightPageState extends State<UserheightPage>
 
   HeightUnit selectedUnit = HeightUnit.ft;
   TextEditingController heightController = TextEditingController();
-  int ft = 0;
-  int inches = 0;
+  UserController con = Get.put(UserController());
+
   String? cm;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // Get.to(() => const ExperianceLvelPage());
         floatingActionButton: FloatingActionBtn(
             onPressed: () {
-              // Get.to(() => const ExperianceLvelPage());
-              Get.to(() => const ExerciseTypePage());
+              print(heightController.text);
+
+              // print(ft.toString() + inches.toString());
+              con.updateUserDetail(widget.age.toString(),
+                  heightController.text.toString(), index.toString(), '');
+
+              Get.to(() => ExerciseTypePage(
+                    age: widget.age,
+                    height: heightController.text.toString(),
+                    weight: index.toString(),
+                  ));
             },
             text: 'Continue'),
         backgroundColor: Colors.white,
@@ -463,7 +482,7 @@ class _UserheightPageState extends State<UserheightPage>
   }
 
   inchesToCm() {
-    int inchesTotal = (ft * 12) + inches;
+    double inchesTotal = (ft! * 12.0) + inches!;
     cm = (inchesTotal * 2.54).toStringAsPrecision(5);
     heightController.text = cm!;
   }

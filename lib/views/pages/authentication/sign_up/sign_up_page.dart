@@ -4,6 +4,7 @@ import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_up/privacy_policay.dart';
+import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_inputfield.dart';
 import 'package:flutter/gestures.dart';
@@ -167,7 +168,16 @@ class SignUpPage extends StatelessWidget {
                                       height:
                                           1.5 * SizeConfig.heightMultiplier),
                                   Mybutton(
-                                    onTap: () {},
+                                    onTap: () {
+                                      con.signup(
+                                          age: '',
+                                          height: '',
+                                          weight: '',
+                                          exerciseType: '',
+                                          username: usernameController.text,
+                                          email: emailController.text,
+                                          password: passwordController.text);
+                                    },
                                     text: "Agree and continue",
                                   ),
                                   SizedBox(

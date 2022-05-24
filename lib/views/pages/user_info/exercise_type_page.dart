@@ -4,12 +4,22 @@ import 'package:fitden_homeworkout/main.dart';
 import 'package:fitden_homeworkout/models/exercise_category_model.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
+import 'package:fitden_homeworkout/views/pages/root/root_page.dart';
+import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class ExerciseTypePage extends StatefulWidget {
-  const ExerciseTypePage({Key? key}) : super(key: key);
-
+  ExerciseTypePage({
+    Key? key,
+    required this.age,
+    required this.height,
+    required this.weight,
+  }) : super(key: key);
+  String age;
+  String height;
+  String weight;
   @override
   State<ExerciseTypePage> createState() => _ExerciseTypePageState();
 }
@@ -61,7 +71,14 @@ class _ExerciseTypePageState extends State<ExerciseTypePage> {
                     widthFactor: 0.8,
                     child: GestureDetector(
                       onTap: () {
-                        Get.to(() => SignInPage());
+                        con.updateUserDetail(
+                            widget.age,
+                            widget.height,
+                            widget.weight,
+                            exerciseCategoryImageData[index].exerciseName);
+                        print(exerciseCategoryImageData[index].exerciseName);
+
+                        Get.to(() => const RootPage());
                       },
                       child: Container(
                         margin: const EdgeInsets.all(16),

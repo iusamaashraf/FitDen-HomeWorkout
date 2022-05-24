@@ -1,4 +1,5 @@
 import 'package:fitden_homeworkout/constants/colors.dart';
+import 'package:fitden_homeworkout/controllers/user_controller.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/user_info/user_height_page.dart';
 import 'package:fitden_homeworkout/views/widgets/floating_action_btn.dart';
@@ -20,6 +21,7 @@ int index = 16;
 double containerWidth = 100;
 int count = 0;
 int direction = 0;
+final UserController con = Get.put(UserController());
 
 class _UserAgePageState extends State<UserAgePage>
     with TickerProviderStateMixin {
@@ -27,10 +29,12 @@ class _UserAgePageState extends State<UserAgePage>
   late SequenceAnimation sequenceAnimation1;
   late AnimationController _controller2;
   late SequenceAnimation sequenceAnimation2;
+  UserController con = Get.put(UserController());
 
   @override
   void initState() {
     super.initState();
+    con.getUserDetail();
     _controller1 = AnimationController(
       vsync: this,
       duration: const Duration(microseconds: 375),
@@ -148,7 +152,10 @@ class _UserAgePageState extends State<UserAgePage>
     return Scaffold(
       floatingActionButton: FloatingActionBtn(
         onPressed: () {
-          Get.to(() => const UserheightPage());
+          con.updateUserDetail(index.toString(), '', '', '');
+          Get.to(() => UserheightPage(
+                age: index.toString(),
+              ));
         },
         text: 'Continue',
       ),
