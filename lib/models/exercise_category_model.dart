@@ -10,15 +10,15 @@ class ExerciseCategoryImageData {
 
 List<ExerciseCategoryImageData> exerciseCategoryImageData = [
   ExerciseCategoryImageData(
-    imgPath: 'assets/images/weight_gain.jpg',
+    imgPath: 'assets/images/weightgain.png',
     exerciseName: 'Weight Gain',
   ),
   ExerciseCategoryImageData(
-    imgPath: 'assets/images/weight_loose.jpg',
+    imgPath: 'assets/images/weightloose.png',
     exerciseName: 'Weight Loose',
   ),
   ExerciseCategoryImageData(
-    imgPath: 'assets/images/looksmart.png',
+    imgPath: 'assets/images/looksbetter.png',
     exerciseName: 'Looks Better',
   ),
 ];

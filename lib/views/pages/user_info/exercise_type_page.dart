@@ -3,7 +3,6 @@ import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/main.dart';
 import 'package:fitden_homeworkout/models/exercise_category_model.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
-import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
 import 'package:fitden_homeworkout/views/pages/root/root_page.dart';
 import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +75,7 @@ class _ExerciseTypePageState extends State<ExerciseTypePage> {
                             widget.height,
                             widget.weight,
                             exerciseCategoryImageData[index].exerciseName);
+                        // ignore: avoid_print
                         print(exerciseCategoryImageData[index].exerciseName);
 
                         Get.to(() => const RootPage());

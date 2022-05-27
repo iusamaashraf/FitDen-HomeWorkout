@@ -1,4 +1,3 @@
-import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:flutter/material.dart';
 
 class MyInputField extends StatelessWidget {
@@ -20,28 +19,34 @@ class MyInputField extends StatelessWidget {
       validator: validator,
       controller: controller,
       decoration: InputDecoration(
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
-          borderSide: BorderSide(width: 1, color: Colors.white),
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
         ),
-        disabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
-          borderSide: BorderSide(width: 1, color: Colors.white),
+        focusedBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
-          borderSide: BorderSide(width: 1, color: Colors.white),
-        ),
-        border: const OutlineInputBorder(
-            borderRadius:
-                BorderRadius.all(Radius.circular(defaultBorderRadius)),
-            borderSide: BorderSide(width: 1, color: Colors.white)),
-        errorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            borderSide: BorderSide(width: 1, color: Colors.black)),
-        focusedErrorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            borderSide: BorderSide(width: 1, color: Colors.red)),
+        // focusedBorder: const OutlineInputBorder(
+        //   borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
+        //   borderSide: BorderSide(width: 1, color: Colors.white),
+        // ),
+        // disabledBorder: const OutlineInputBorder(
+        //   borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
+        //   borderSide: BorderSide(width: 1, color: Colors.white),
+        // ),
+        // enabledBorder: const OutlineInputBorder(
+        //   borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),
+        //   borderSide: BorderSide(width: 1, color: Colors.white),
+        // ),
+        // border: const OutlineInputBorder(
+        //     borderRadius:
+        //         BorderRadius.all(Radius.circular(defaultBorderRadius)),
+        //     borderSide: BorderSide(width: 1, color: Colors.white)),
+        // errorBorder: const OutlineInputBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(4)),
+        //     borderSide: BorderSide(width: 1, color: Colors.black)),
+        // focusedErrorBorder: const OutlineInputBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(4)),
+        //     borderSide: BorderSide(width: 1, color: Colors.red)),
         filled: true,
         hintStyle: const TextStyle(color: Colors.grey),
         //   labelText: labelText,

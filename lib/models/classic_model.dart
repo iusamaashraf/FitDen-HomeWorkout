@@ -2,8 +2,14 @@ class Classic {
   String? day;
   String? workoutCompleted;
   String? totalExercises;
+  bool? isDone;
   bool? isStart;
-  Classic({this.day, this.workoutCompleted, this.totalExercises, this.isStart});
+  Classic(
+      {this.day,
+      this.workoutCompleted,
+      this.totalExercises,
+      this.isStart,
+      this.isDone = false});
 }
 
 List<Classic> classicData = [

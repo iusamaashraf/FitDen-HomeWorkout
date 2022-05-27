@@ -7,7 +7,6 @@ import 'package:fitden_homeworkout/models/user_detail_model.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
 import 'package:fitden_homeworkout/views/pages/root/root_page.dart';
 import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
-import 'package:fitden_homeworkout/views/pages/user_info/user_height_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +22,7 @@ class UserController extends GetxController {
     required String username,
     required String email,
     required String password,
+    required String image,
   }) async {
     Map<String, dynamic> userInfo = {
       'age': age,
@@ -31,6 +31,7 @@ class UserController extends GetxController {
       'exercisetype': exerciseType,
       'username': username,
       'email': email,
+      'image': image,
     };
     await auth
         .createUserWithEmailAndPassword(
@@ -54,12 +55,13 @@ class UserController extends GetxController {
 
   set getuser(UserDetail value) => userModel.value = value;
   getUserDetail() async {
-    print(auth.currentUser!.uid);
+    // print(auth.currentUser!.uid);
     try {
       DocumentSnapshot doc = await firebaseFirestore
           .collection('user')
           .doc(auth.currentUser!.uid)
           .get();
+      // ignore: avoid_print
       print(doc);
       getuser = UserDetail.fromSnapshot(doc);
     } catch (e) {
@@ -111,9 +113,8 @@ class UserController extends GetxController {
     });
   }
 
-  File? image;
   //here we get image from firebase
-  void uploadImage() async {
+  void uploadImage(File? image) async {
     final ref = FirebaseStorage.instance
         .ref()
         .child('profile')

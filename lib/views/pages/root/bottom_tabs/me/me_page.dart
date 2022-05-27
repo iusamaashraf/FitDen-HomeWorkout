@@ -3,12 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fitden_homeworkout/constants/colors.dart';
-import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/constants/icons.dart';
 import 'package:fitden_homeworkout/controllers/user_controller.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
-import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
-import 'package:fitden_homeworkout/views/widgets/my_app_bar.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_inputfield.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +58,7 @@ class _MePageState extends State<MePage> {
       setState(() {
         this.image = imageTemporary;
         convertFileToImage(File(image.path));
-        con.uploadImage();
+        con.uploadImage(image.path as File);
         // ignore: avoid_print
         print('The image is${convertFileToImage(File(image.path))}');
       });
@@ -224,10 +221,25 @@ class _MePageState extends State<MePage> {
                       SizedBox(height: 3 * SizeConfig.heightMultiplier),
                       ElevateButton(
                         onTap: () {
+                          // Get.to(() => const WaterRemainderPage());
+                        },
+                        text: 'My Profile',
+                      ),
+                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                      ElevateButton(
+                        onTap: () {
                           Get.to(() => const WaterRemainderPage());
                         },
                         text: 'Water Remainder',
                       ),
+                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                      ElevateButton(
+                        onTap: () {
+                          Get.to(() => const WaterRemainderPage());
+                        },
+                        text: 'Languages',
+                      ),
+                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
                     ],
                   );
                 },
@@ -311,9 +323,12 @@ class ElevateButton extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 6.5 * SizeConfig.heightMultiplier,
       width: 90 * SizeConfig.widthMultiplier,
+      // decoration: BoxDecoration(
+      //   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
+      // ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0.0,

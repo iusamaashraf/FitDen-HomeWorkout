@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:fitden_homeworkout/constants/images.dart';
-import 'package:fitden_homeworkout/utils/size_config.dart';
+import 'package:fitden_homeworkout/constants/colors.dart';
+ import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
-import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class SplashPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 6), () {
+    Timer(const Duration(seconds: 5), () {
       Get.offAll(() => SignInPage());
     });
     super.initState();
@@ -26,32 +26,22 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: primaryColor,
       body: SizedBox.expand(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 100 * SizeConfig.heightMultiplier,
-              width: 100 * SizeConfig.widthMultiplier,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(splash),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('Fit Den',
-                      style: Theme.of(context).textTheme.headline2!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text('Home Workout Assistant',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 13 * SizeConfig.heightMultiplier),
-                ],
-              ),
-            )
+            Text('Fit Den',
+                style: Theme.of(context).textTheme.headline2!.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            Text('Workout Assistant',
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.normal)),
+            SizedBox(height: 5 * SizeConfig.heightMultiplier),
+            const SpinKitDoubleBounce(
+              color: splashColor,
+              size: 50.0,
+            ),
           ],
         ),
       ),

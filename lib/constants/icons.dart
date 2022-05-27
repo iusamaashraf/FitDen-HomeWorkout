@@ -6,3 +6,4 @@ const String caloriesIcon = 'assets/stepcounter/calories.png';
 const String locations = 'assets/stepcounter/locations.png';
 const String durationIcon = 'assets/stepcounter/stopwatch.png';
 const String avatar = 'assets/icons/avatar.png';
+const String logo = 'assets/icons/logo.jpg';

@@ -8,6 +8,7 @@ class UserDetail {
   String? username;
   String? exerciseType;
   String? email;
+  String? image;
   UserDetail({
     this.id,
     this.age,
@@ -16,6 +17,7 @@ class UserDetail {
     this.username,
     this.exerciseType,
     this.email,
+    this.image,
   });
   UserDetail.fromSnapshot(DocumentSnapshot data) {
     id = data.id;
@@ -25,6 +27,8 @@ class UserDetail {
     username = data['username'] ?? "";
     exerciseType = data['exercisetype'] ?? "";
     email = data['email'] ?? "";
-    print('data is :$id');
+    image = data['image'] ?? "";
+    // ignore: avoid_print
+    print('data is :$username');
   }
 }
