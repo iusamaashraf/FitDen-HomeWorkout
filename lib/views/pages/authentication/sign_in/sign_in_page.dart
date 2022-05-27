@@ -7,6 +7,7 @@ import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/forgot_pass/forgt_pass_page.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_up/sign_up_page.dart';
 import 'package:fitden_homeworkout/views/pages/root/root_page.dart';
+import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:fitden_homeworkout/views/widgets/auth_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_button.dart';
 import 'package:fitden_homeworkout/views/widgets/my_inputfield.dart';
@@ -109,7 +110,8 @@ class SignInPage extends StatelessWidget {
                                           1.5 * SizeConfig.heightMultiplier),
                                   Mybutton(
                                     onTap: () {
-                                      Get.offAll(const RootPage());
+                                      con.login(emailController.text,
+                                          passwordController.text);
                                     },
                                     text: "Continue",
                                   ),

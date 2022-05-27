@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitden_homeworkout/models/user_detail_model.dart';
+import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
 import 'package:fitden_homeworkout/views/pages/root/root_page.dart';
 import 'package:fitden_homeworkout/views/pages/user_info/user_age_page.dart';
 import 'package:fitden_homeworkout/views/pages/user_info/user_height_page.dart';
@@ -50,6 +54,7 @@ class UserController extends GetxController {
 
   set getuser(UserDetail value) => userModel.value = value;
   getUserDetail() async {
+    print(auth.currentUser!.uid);
     try {
       DocumentSnapshot doc = await firebaseFirestore
           .collection('user')
@@ -78,6 +83,16 @@ class UserController extends GetxController {
     });
   }
 
+//here we update the username
+  void usernameUpdate(String username) {
+    firebaseFirestore.collection('user').doc(auth.currentUser!.uid).update({
+      'username': username,
+    }).then((value) {
+      getUserDetail();
+      Get.back();
+    });
+  }
+
 //here is the login method to get access of full app
   void login(String email, String password) async {
     await FirebaseAuth.instance
@@ -85,6 +100,34 @@ class UserController extends GetxController {
             email: email.trim(), password: password.trim())
         .then((value) {
       Get.offAll(() => const RootPage());
+    });
+  }
+
+  //here is the logout method
+
+  void signOut() {
+    auth.signOut().then((value) {
+      Get.offAll(SignInPage());
+    });
+  }
+
+  File? image;
+  //here we get image from firebase
+  void uploadImage() async {
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('profile')
+        .child(auth.currentUser!.uid);
+    await ref.putFile(image!);
+
+    final url = await ref.getDownloadURL();
+    await firebaseFirestore
+        .collection('user')
+        .doc(auth.currentUser!.uid)
+        .update({
+      'image': url,
+    }).then((value) {
+      Get.snackbar('Updated', 'Updated successfully...');
     });
   }
 }

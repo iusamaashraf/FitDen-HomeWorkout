@@ -19,7 +19,7 @@ class _RootPageState extends State<RootPage> {
   final List<Widget> screens = [
     const ClassicPage(),
     const DailyPage(),
-    const MePage(),
+    MePage(),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -75,7 +75,7 @@ class _RootPageState extends State<RootPage> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = const MePage();
+                    currentScreen = MePage();
                     currentTab = 2;
                   });
                 },

@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               home: const SplashPage(),
               // home: const RestPage(),
 
-              //home: const Dashboard(),
+              
             );
           },
         );
