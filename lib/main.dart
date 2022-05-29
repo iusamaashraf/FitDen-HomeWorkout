@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitden_homeworkout/binding/binding.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/splash/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           builder: (context, orientation) {
             SizeConfig().init(constraints, orientation);
             return GetMaterialApp(
+              // initialBinding: AuthBinding(),
               theme: ThemeData(fontFamily: 'Montserrat'),
               builder: (context, child) {
                 return ScrollConfiguration(
@@ -52,8 +54,6 @@ class MyApp extends StatelessWidget {
               //  builder: DevicePreview.appBuilder,
               home: const SplashPage(),
               // home: const RestPage(),
-
-              
             );
           },
         );

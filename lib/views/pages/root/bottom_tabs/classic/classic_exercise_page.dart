@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/constants/images.dart';
+import 'package:fitden_homeworkout/controllers/user_controller.dart';
+import 'package:fitden_homeworkout/models/classic_list.dart';
 import 'package:fitden_homeworkout/models/classic_model.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/models/start_exercise_model.dart';
 import 'package:fitden_homeworkout/views/pages/rest_page.dart';
+import 'package:fitden_homeworkout/views/pages/root/bottom_tabs/classic/start_exercise_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -12,13 +16,41 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readmore/readmore.dart';
 
 // ignore: must_be_immutable
-class ClassicExercisePage extends StatelessWidget {
-  ClassicExercisePage({
+class ClassicExercisePage extends StatefulWidget {
+  const ClassicExercisePage({
     Key? key,
     required this.getData,
+    required this.dayWiseExerciseModel,
+    required this.docId,
   }) : super(key: key);
   final Classic getData;
+  final DayWiseExerciseModel dayWiseExerciseModel;
+  final String docId;
+
+  @override
+  State<ClassicExercisePage> createState() => _ClassicExercisePageState();
+}
+
+class _ClassicExercisePageState extends State<ClassicExercisePage> {
   final FlutterTts flutterTts = FlutterTts();
+  UserController userController = Get.put(UserController());
+
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(userController.auth.currentUser?.uid)
+        .collection('daywiseExercises')
+        .doc(widget.docId)
+        .update({
+      'isStart': true,
+    }).then((value) {
+      print('data update');
+    });
+    userController.allExerciseStream(widget.docId);
+    super.initState();
+  }
+
   speak(String name) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1);
@@ -68,7 +100,7 @@ class ClassicExercisePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ReadMoreText(
-                    "Just 5 - 10 min, this training is designed especially for beginners who want to looks good but don't know where to start.\n\nThis training mixes with basic aerobic and anaerobic exercises. It uses your bodyweight to work all muscles groups and boost your fat burning.\n\nLow impact option is friendlu for people who are overweight or have joint problems. Please stick to a low calorie diet to maximize your workout result.",
+                    widget.dayWiseExerciseModel.description!,
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1!
@@ -111,162 +143,263 @@ class ClassicExercisePage extends StatelessWidget {
                         ),
                       )),
                   SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                  Text("Today's " + getData.totalExercises.toString()),
+                  Text("Today's " + widget.getData.totalExercises.toString()),
                   SizedBox(height: 2 * SizeConfig.heightMultiplier),
                   Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: myPlan.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  showBarModalBottomSheet(
-                                    context: context,
-                                    builder: (context) => SizedBox(
-                                      height: 80 * SizeConfig.heightMultiplier,
-                                      width: 100 * SizeConfig.widthMultiplier,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 20 *
-                                                  SizeConfig.heightMultiplier,
-                                              width: 100 *
-                                                  SizeConfig.widthMultiplier,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        defaultBorderRadius),
-                                                color: Colors.grey[300],
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        myPlan[index].imgPath!),
-                                                    fit: BoxFit.cover),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                      color: Colors.black12,
-                                                      blurRadius: 6)
+                    child: GetX<UserController>(
+                        init: Get.put(UserController()),
+                        builder: (userController) {
+                          return ListView.builder(
+                            padding: EdgeInsets.only(
+                                bottom: 3 * SizeConfig.heightMultiplier),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: userController.getallExercise.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showBarModalBottomSheet(
+                                          context: context,
+                                          builder: (context) => SizedBox(
+                                            height: 80 *
+                                                SizeConfig.heightMultiplier,
+                                            width: 100 *
+                                                SizeConfig.widthMultiplier,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height: 20 *
+                                                        SizeConfig
+                                                            .heightMultiplier,
+                                                    width: 100 *
+                                                        SizeConfig
+                                                            .widthMultiplier,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              defaultBorderRadius),
+                                                      color: Colors.grey[300],
+                                                      image: DecorationImage(
+                                                          image: AssetImage(userController
+                                                                      .getallExercise[
+                                                                          index]
+                                                                      .image! ==
+                                                                  null
+                                                              ? 'assets/animations/01281201-Battling-Ropes.gif'
+                                                              : userController
+                                                                  .getallExercise[
+                                                                      index]
+                                                                  .image!),
+                                                          fit: BoxFit.cover),
+                                                      boxShadow: const [
+                                                        BoxShadow(
+                                                            color:
+                                                                Colors.black12,
+                                                            blurRadius: 6)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      height: 2 *
+                                                          SizeConfig
+                                                              .heightMultiplier),
+                                                  Text(
+                                                      userController
+                                                          .getallExercise[index]
+                                                          .title!,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline6!
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                  SizedBox(
+                                                      height: 2 *
+                                                          SizeConfig
+                                                              .heightMultiplier),
+                                                  Text(
+                                                      userController
+                                                          .getallExercise[index]
+                                                          .noOfSets
+                                                          .toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline3!
+                                                          .copyWith(
+                                                              color:
+                                                                  primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                  SizedBox(
+                                                      height: 2 *
+                                                          SizeConfig
+                                                              .heightMultiplier),
+                                                  Flexible(
+                                                    child: Text(
+                                                        userController
+                                                            .getallExercise[
+                                                                index]
+                                                            .description!,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle1!
+                                                            .copyWith(
+                                                                color:
+                                                                    primaryColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Get.to(() =>
+                                                              const RestPage());
+                                                        },
+                                                        child: const Icon(
+                                                            Icons.done,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 4 *
+                                                            SizeConfig
+                                                                .widthMultiplier,
+                                                      ),
+                                                      Container(
+                                                        height: 12 *
+                                                            SizeConfig
+                                                                .heightMultiplier,
+                                                        width: 12 *
+                                                            SizeConfig
+                                                                .widthMultiplier,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color:
+                                                                    primaryColor),
+                                                        child: Center(
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              speak(userController
+                                                                  .getallExercise[
+                                                                      index]
+                                                                  .description!);
+                                                            },
+                                                            child: const Icon(
+                                                                Icons.mic,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(
-                                                height: 2 *
-                                                    SizeConfig
-                                                        .heightMultiplier),
-                                            Text(myPlan[index].exerciseNmae!,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline6!
-                                                    .copyWith(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                            SizedBox(
-                                                height: 2 *
-                                                    SizeConfig
-                                                        .heightMultiplier),
-                                            Text(myPlan[index].duration!,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3!
-                                                    .copyWith(
-                                                        color: primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                            SizedBox(
-                                                height: 2 *
-                                                    SizeConfig
-                                                        .heightMultiplier),
-                                            Text('Here is the description',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3!
-                                                    .copyWith(
-                                                        color: primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                            GestureDetector(
-                                              onTap: () {
-                                                // speak(myPlan[index]
-                                                //     .exerciseNmae!);
-                                                Get.back();
-                                                Get.to(() => const RestPage());
-                                              },
-                                              child: Container(
-                                                height: 15 *
-                                                    SizeConfig.heightMultiplier,
-                                                width: 15 *
+                                          ),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height:
+                                                8 * SizeConfig.heightMultiplier,
+                                            width:
+                                                20 * SizeConfig.widthMultiplier,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[50],
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        defaultBorderRadius)),
+                                            child: Image.asset(
+                                              userController
+                                                  .getallExercise[index].image!,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width: 3 *
+                                                  SizeConfig.widthMultiplier),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 50 *
                                                     SizeConfig.widthMultiplier,
-                                                decoration: const BoxDecoration(
-                                                  color: primaryColor,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(Icons.done,
-                                                    color: Colors.white),
+                                                child: Text(
+                                                    userController
+                                                        .getallExercise[index]
+                                                        .title!,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle1!
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                              Text(
+                                                  userController
+                                                      .getallExercise[index]
+                                                      .noOfSets
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption!
+                                                      .copyWith(
+                                                          color: Colors.grey))
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 8 * SizeConfig.heightMultiplier,
-                                      width: 20 * SizeConfig.widthMultiplier,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[50],
-                                          borderRadius: BorderRadius.circular(
-                                              defaultBorderRadius)),
-                                      child: Image.asset(
-                                        myPlan[index].imgPath!,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        width: 3 * SizeConfig.widthMultiplier),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width:
-                                              50 * SizeConfig.widthMultiplier,
-                                          child: Text(
-                                              myPlan[index].exerciseNmae!,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1!
-                                                  .copyWith(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                        ),
-                                        Text(myPlan[index].duration!,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption!
-                                                .copyWith(color: Colors.grey))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  )
+                                  ),
+                                  // userController.getallExercise.length - 1 ==
+                                  //         index
+                                  //     ? TextButton(
+                                  //         onPressed: () {},
+                                  //         child: const Text('Start',
+                                  //             style: TextStyle(
+                                  //                 fontSize: 24,
+                                  //                 color: Colors.black)))
+                                  //     : TextButton(
+                                  //         onPressed: () {
+                                  //           Get.to(() => StartExercisePage(
+                                  //               getData: userController
+                                  //                   .getallExercise[index]));
+                                  //         },
+                                  //         child: const Text('Start',
+                                  //             style: TextStyle(
+                                  //                 color: Colors.black))),
+                                ],
+                              );
+                            },
+                          );
+                        }),
+                  ),
                 ],
               ),
             )),

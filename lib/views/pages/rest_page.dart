@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/models/classic_model.dart';
 import 'package:fitden_homeworkout/views/pages/root/bottom_tabs/classic/classic_exercise_page.dart';
@@ -27,7 +29,7 @@ class _RestPageState extends State<RestPage> {
   @override
   void initState() {
     speak();
-
+    Timer(const Duration(seconds: 20), () => Get.back());
     super.initState();
   }
 
@@ -58,7 +60,7 @@ class _RestPageState extends State<RestPage> {
                     ),
                 interval: const Duration(milliseconds: 100),
                 onFinished: () {
-                  Get.offAll(() => ClassicExercisePage(getData: Classic()));
+                  // Get.offAll(() => ClassicExercisePage(getData: Classic(),dayWiseExerciseModel: ,));
                 })
           ],
         ),

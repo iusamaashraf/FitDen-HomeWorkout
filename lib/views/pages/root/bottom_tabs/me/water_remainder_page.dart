@@ -56,6 +56,7 @@ class _WaterRemainderPageState extends State<WaterRemainderPage> {
                         onDateTimeChanged: (value) {
                           setState(() {
                             time = value.toString();
+                            print(time);
                           });
                         },
                         initialDateTime: DateTime.now(),

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:fitden_homeworkout/constants/consts.dart';
+import 'package:fitden_homeworkout/controllers/exercise_controller.dart';
 import 'package:fitden_homeworkout/main.dart';
 import 'package:fitden_homeworkout/models/exercise_category_model.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class ExerciseTypePage extends StatefulWidget {
+  ExerciseController con = Get.put(ExerciseController());
   ExerciseTypePage({
     Key? key,
     required this.age,
@@ -57,51 +59,69 @@ class _ExerciseTypePageState extends State<ExerciseTypePage> {
             ),
             FractionallySizedBox(
               heightFactor: 0.55,
-              child: PageView.builder(
-                scrollBehavior: MyBehavior(),
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentIndex = page;
-                  });
-                },
-                itemCount: exerciseCategoryImageData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return FractionallySizedBox(
-                    widthFactor: 0.8,
-                    child: GestureDetector(
-                      onTap: () {
-                        con.updateUserDetail(
-                            widget.age,
-                            widget.height,
-                            widget.weight,
-                            exerciseCategoryImageData[index].exerciseName);
-                        // ignore: avoid_print
-                        print(exerciseCategoryImageData[index].exerciseName);
+              child: GetX<ExerciseController>(
+                init: ExerciseController(),
+                builder: (exerciseController) {
+                  return PageView.builder(
+                    scrollBehavior: MyBehavior(),
+                    onPageChanged: (int page) {
+                      setState(() {
+                        _currentIndex = page;
+                      });
+                    },
+                    itemCount: exerciseController.getexerciseType.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: GestureDetector(
+                          onTap: () {
+                            exerciseController.collectionname =
+                                exerciseController
+                                    .getexerciseType[index].exerciseType!;
+                            exerciseController.id =
+                                exerciseController.getexerciseType[index].id!;
+                            con.updateUserDetail(
+                              widget.age,
+                              widget.height,
+                              widget.weight,
+                              exerciseController
+                                  .getexerciseType[index].exerciseType!,
+                              exerciseController
+                                  .getexerciseType[index].exerciseType!,
+                              exerciseController.getexerciseType[index].id!,
+                               exerciseController.getexerciseType[index].id!,
+                               true
+                            );
+                            // ignore: avoid_print
+                            print(
+                                exerciseCategoryImageData[index].exerciseName);
 
-                        Get.to(() => const RootPage());
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            // color: Colors.red,
-                            image: DecorationImage(
-                              image: AssetImage(
-                                exerciseCategoryImageData[index].imgPath,
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius:
-                                BorderRadius.circular(defaultBorderRadius),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                spreadRadius: 5,
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ]),
-                      ),
-                    ),
+                            Get.to(() => const RootPage());
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                                // color: Colors.red,
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    exerciseCategoryImageData[index].imgPath,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(defaultBorderRadius),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    spreadRadius: 5,
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

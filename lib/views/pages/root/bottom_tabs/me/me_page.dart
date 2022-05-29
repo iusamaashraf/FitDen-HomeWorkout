@@ -52,15 +52,15 @@ class _MePageState extends State<MePage> {
   File? image;
   Future pickImage(ImageSource sr) async {
     try {
-      final image = await ImagePicker().pickImage(source: sr);
+      final imagemy = await ImagePicker().pickImage(source: sr);
       if (image == null) {}
       final imageTemporary = File(image!.path);
       setState(() {
-        this.image = imageTemporary;
-        convertFileToImage(File(image.path));
-        con.uploadImage(image.path as File);
+        image = imageTemporary;
+        //  convertFileToImage(File(imagemy.path));
+        con.uploadImage(image);
         // ignore: avoid_print
-        print('The image is${convertFileToImage(File(image.path))}');
+        // print('The image is${convertFileToImage(File(imagemy.path))}');
       });
     } on PlatformException catch (e) {
       // ignore: avoid_print
@@ -136,7 +136,6 @@ class _MePageState extends State<MePage> {
           //for picking video functionality
           SimpleDialogOption(
             onPressed: () {
-              pickImage(ImageSource.gallery);
               Get.back();
             },
             child: Padding(
@@ -196,49 +195,116 @@ class _MePageState extends State<MePage> {
                 builder: (con) {
                   return Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: image != null
-                            ? Container(
-                                height: 10 * SizeConfig.heightMultiplier,
-                                width: 25 * SizeConfig.widthMultiplier,
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(image: myImage!.image),
-                                ),
-                              )
-                            : const CircleAvatar(
-                                backgroundImage: AssetImage(avatar),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: image != null
+                                ? Container(
+                                    height: 10 * SizeConfig.heightMultiplier,
+                                    width: 25 * SizeConfig.widthMultiplier,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: myImage!.image),
+                                    ),
+                                  )
+                                : con.getuser.image!.isNotEmpty
+                                    ? CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage:
+                                            NetworkImage(con.getuser.image!),
+                                      )
+                                    : const CircleAvatar(
+                                        backgroundImage: AssetImage(avatar),
+                                      ),
+                          ),
+                          SizedBox(width: 3 * SizeConfig.widthMultiplier),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                con.getuser.username.toString().toUpperCase(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
                               ),
+                              Text(
+                                'Beginner',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(
+                                      color: Colors.grey,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                      Text(
-                        con.getuser.username.toString().toUpperCase(),
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 3 * SizeConfig.heightMultiplier),
-                      ElevateButton(
-                        onTap: () {
-                          // Get.to(() => const WaterRemainderPage());
-                        },
-                        text: 'My Profile',
-                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 100,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 3 * SizeConfig.heightMultiplier),
+                            ProfileRowData(
+                              text: con.getuser.email.toString(),
+                              color: Colors.green,
+                              icon: 'assets/icons/mail.png',
+                            ),
+                            SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
+                            ProfileRowData(
+                              color: primaryColor,
+                              icon: 'assets/icons/age.png',
+                              text: con.getuser.age.toString() + " years",
+                            ),
+                            SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
+                            ProfileRowData(
+                              color: Colors.grey.shade600,
+                              icon: 'assets/icons/exercise.png',
+                              text: con.getuser.exerciseType!,
+                            ),
+                            SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
+                            ProfileRowData(
+                              color: Colors.amber,
+                              icon: 'assets/icons/height.png',
+                              text: con.getuser.height!,
+                            ),
+                            SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
+                            ProfileRowData(
+                              color: Colors.lightBlue,
+                              icon: 'assets/icons/weight.png',
+                              text: con.getuser.weight! + ' kg',
+                            ),
+                            SizedBox(height: 1.5 * SizeConfig.heightMultiplier),
+                          ],
+                        ),
+                      ), // ElevateButton(
+                      //   onTap: () {
+                      //     // Get.to(() => const WaterRemainderPage());
+                      //   },
+                      //   text: 'My Profile',
+                      // ),
                       SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                      ElevateButton(
-                        onTap: () {
-                          Get.to(() => const WaterRemainderPage());
-                        },
-                        text: 'Water Remainder',
-                      ),
-                      SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                      ElevateButton(
-                        onTap: () {
-                          Get.to(() => const WaterRemainderPage());
-                        },
-                        text: 'Languages',
-                      ),
+                      // ElevateButton(
+                      //   onTap: () {
+                      //     Get.to(() => const WaterRemainderPage());
+                      //   },
+                      //   text: 'Water Remainder',
+                      // ),
+                      // SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                      // ElevateButton(
+                      //   onTap: () {
+                      //     // Get.to(() => const WaterRemainderPage());
+                      //   },
+                      //   text: 'Languages',
+                      // ),
                       SizedBox(height: 2 * SizeConfig.heightMultiplier),
                     ],
                   );
@@ -310,6 +376,44 @@ class _MePageState extends State<MePage> {
             )
           ]);
         });
+  }
+}
+
+class ProfileRowData extends StatelessWidget {
+  const ProfileRowData({
+    Key? key,
+    required this.color,
+    required this.icon,
+    required this.text,
+  }) : super(key: key);
+  final String icon;
+  final String text;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+            height: 5 * SizeConfig.heightMultiplier,
+            width: 10 * SizeConfig.widthMultiplier,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                icon,
+                color: Colors.white,
+              ),
+            )),
+        SizedBox(width: 3 * SizeConfig.widthMultiplier),
+        Text(
+          text,
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(color: Colors.black, fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
   }
 }
 

@@ -173,8 +173,15 @@ class _UserheightPageState extends State<UserheightPage>
               print(heightController.text);
 
               // print(ft.toString() + inches.toString());
-              con.updateUserDetail(widget.age.toString(),
-                  heightController.text.toString(), index.toString(), '');
+              con.updateUserDetail(
+                  widget.age.toString(),
+                  heightController.text.toString(),
+                  index.toString(),
+                  '',
+                  '',
+                  '',
+                  '',
+                  false);
 
               Get.to(() => ExerciseTypePage(
                     age: widget.age,
@@ -222,7 +229,7 @@ class _UserheightPageState extends State<UserheightPage>
                                   builder: (context) {
                                     return Container(
                                       height: 200,
-                                      color: Colors.grey,
+                                      color: Colors.white,
                                       child: Row(
                                         children: [
                                           Expanded(

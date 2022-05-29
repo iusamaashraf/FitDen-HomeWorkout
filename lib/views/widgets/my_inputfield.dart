@@ -57,4 +57,13 @@ class MyInputField extends StatelessWidget {
       ),
     );
   }
-}
+} 
+                    //validator: () {},
+                    // validator: (value) {
+                    //   if (value!.isEmpty || value == null) {
+                    //     return "Required";
+                    //   } else {
+                    //     return '';
+                    //   }
+                    // },
+                  

@@ -68,7 +68,7 @@ class SignUpPage extends StatelessWidget {
                           username: usernameController.text,
                           email: emailController.text,
                           password: passwordController.text,
-                          image: '');
+                          image: '',exercisetypeid: '');
                     },
                     text: 'Sign up'),
                 SizedBox(height: 3 * SizeConfig.heightMultiplier),

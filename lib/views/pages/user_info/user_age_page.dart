@@ -152,7 +152,7 @@ class _UserAgePageState extends State<UserAgePage>
     return Scaffold(
       floatingActionButton: FloatingActionBtn(
         onPressed: () {
-          con.updateUserDetail(index.toString(), '', '', '');
+          con.updateUserDetail(index.toString(), '', '', '', '', '','',false);
           Get.to(() => UserheightPage(
                 age: index.toString(),
               ));

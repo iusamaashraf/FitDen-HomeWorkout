@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:fitden_homeworkout/constants/colors.dart';
- import 'package:fitden_homeworkout/utils/size_config.dart';
+import 'package:fitden_homeworkout/initial_root/initial_root.dart';
+import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/authentication/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -18,6 +19,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Timer(const Duration(seconds: 5), () {
+      // Get.offAll(() => InitialRoot());
       Get.offAll(() => SignInPage());
     });
     super.initState();

@@ -1,3 +1,4 @@
+import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/controllers/basic_controller.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/root/bottom_tabs/daily/components/water_progress_bar.dart';
@@ -46,24 +47,52 @@ class _WaterInktakeHistoryPageState extends State<WaterInktakeHistoryPage> {
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Colors.black, fontWeight: FontWeight.bold)),
             SizedBox(height: 2 * SizeConfig.heightMultiplier),
-            SizedBox(
-              height: 120,
-              width: 120,
-              child: WaterCircularProgressBar(),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  height: 120,
+                  width: 120,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.grey,
+                    color: primaryColor,
+                    strokeWidth: 8,
+                    value: con.getwater.numberofglass! / 8,
+                  ),
+                ),
+                Column(
+                  children: [
+                    Text('Min. glass 8/',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(color: primaryColor)),
+                    Obx(
+                      () => Text(con.getwater.numberofglass.toString()),
+                    ),
+                  ],
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 WaterTrackerButton(
                   onTap: () {
-                    con.decrement();
+                    if (con.getwater.numberofglass! > 0) {
+                      con.getwater.numberofglass =
+                          con.getwater.numberofglass! - 1;
+                    }
+                    con.updateWaterTracker(con.getwater.numberofglass!.toInt());
                   },
                   text: '-',
                 ),
                 SizedBox(width: 9 * SizeConfig.widthMultiplier),
                 WaterTrackerButton(
                   onTap: () {
-                    con.increment();
+                    con.getwater.numberofglass =
+                        con.getwater.numberofglass! + 1;
+                    con.updateWaterTracker(con.getwater.numberofglass!.toInt());
                   },
                   text: '+',
                 ),

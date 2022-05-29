@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:fitden_homeworkout/constants/colors.dart';
 import 'package:fitden_homeworkout/constants/consts.dart';
 import 'package:fitden_homeworkout/controllers/basic_controller.dart';
 import 'package:fitden_homeworkout/utils/size_config.dart';
 import 'package:fitden_homeworkout/views/pages/root/bottom_tabs/daily/components/water_progress_bar.dart';
+import 'package:fitden_homeworkout/views/widgets/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -23,6 +25,11 @@ class DailyPage extends StatefulWidget {
 class _DailyPageState extends State<DailyPage> {
   final BasicController con = Get.put(BasicController());
 
+  @override
+  void initState() {
+    super.initState();
+    con.getWaterDetail();
+  }
   //values for step counter
 
   double x = 0.0;
@@ -39,165 +46,204 @@ class _DailyPageState extends State<DailyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const MyAppBar(text: 'text'),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SizedBox.expand(
-          child: Column(
-            children: [
-              //This section for water intake in a day
-              Container(
-                margin: const EdgeInsets.all(defaultPadding),
-                height: 40 * SizeConfig.heightMultiplier,
-                width: 100 * SizeConfig.widthMultiplier,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 18,
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(
-                    defaultBorderRadius,
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //This section for water intake in a day
+            Container(
+              margin: const EdgeInsets.all(defaultPadding),
+              height: 40 * SizeConfig.heightMultiplier,
+              width: 100 * SizeConfig.widthMultiplier,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 18,
                   ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 10),
-                    Text('Water Tracker',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 2 * SizeConfig.heightMultiplier),
-                    SizedBox(
-                      height: 120,
-                      width: 120,
-                      child: WaterCircularProgressBar(),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        WaterTrackerButton(
-                          onTap: () {
-                            con.decrement();
-                          },
-                          text: '-',
-                        ),
-                        SizedBox(width: 9 * SizeConfig.widthMultiplier),
-                        WaterTrackerButton(
-                          onTap: () {
-                            con.increment();
-                          },
-                          text: '+',
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: InkWell(
-                          onTap: () {
-                            //water remainder detail button
-                            Get.to(() => const WaterInktakeHistoryPage());
-                          },
-                          child: Text(
-                            'See Details',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2!
-                                .copyWith(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                ],
+                borderRadius: BorderRadius.circular(
+                  defaultBorderRadius,
                 ),
               ),
-
-              SizedBox(height: 1 * SizeConfig.heightMultiplier),
-              //This section for step counter
-              Container(
-                margin: const EdgeInsets.all(defaultPadding),
-                height: 45 * SizeConfig.heightMultiplier,
-                width: 100 * SizeConfig.widthMultiplier,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 18,
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(
-                    defaultBorderRadius,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10),
+                  Text('Water Tracker',
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          color: Colors.black, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 2 * SizeConfig.heightMultiplier),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      con.getwater.numberofglass != null
+                          ? SizedBox(
+                              height: 120,
+                              width: 120,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.grey,
+                                color: primaryColor,
+                                strokeWidth: 8,
+                                value: con.getwater.numberofglass! / 8,
+                              ),
+                            )
+                          : const Center(child: CircularProgressIndicator()),
+                      Column(
+                        children: [
+                          Text('Min. glass 8/',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(color: primaryColor)),
+                          Obx(
+                            () => con.getwater.numberofglass != null
+                                ? Text(con.getwater.numberofglass.toString())
+                                : const Text('0'),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Text('Step Counter',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Colors.black, fontWeight: FontWeight.bold)),
-                    StreamBuilder<AccelerometerEvent>(
-                      stream: SensorsPlatform.instance.accelerometerEvents,
-                      builder: (context, snapShort) {
-                        if (snapShort.hasData) {
-                          x = snapShort.data!.x;
-                          y = snapShort.data!.y;
-                          z = snapShort.data!.z;
-                          distance = getValue(x, y, z);
-                          if (distance > 20) {
-                            steps++;
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      WaterTrackerButton(
+                        onTap: () {
+                          if (con.getwater.numberofglass! > 0) {
+                            con.getwater.numberofglass =
+                                con.getwater.numberofglass! - 1;
                           }
-                          calories = calculateCalories(steps);
-                          miles = calculateMiles(steps);
-                        }
-                        return
-                            // ignore: sized_box_for_whitespace
-                            Container(
-                          height: 300,
-                          width: 400,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                DashboardCard(steps, miles, calories, duration),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8, right: 8),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: InkWell(
-                          onTap: () {
-                            //Step Counter detail button
-                          },
-                          child: Text(
-                            'See Details',
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2!
-                                .copyWith(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500),
-                          ),
-                        ),
+                          con.updateWaterTracker(
+                              con.getwater.numberofglass!.toInt());
+                        },
+                        text: '-',
                       ),
-                    ),
-                  ],
-                ),
+                      SizedBox(width: 9 * SizeConfig.widthMultiplier),
+                      WaterTrackerButton(
+                        onTap: () {
+                          con.waterTracker(
+                              numberofglass: con.getwater.numberofglass != null
+                                  ? con.getwater.numberofglass!
+                                  : 0);
+                          con.getwater.numberofglass =
+                              con.getwater.numberofglass! + 1;
+                          con.updateWaterTracker(
+                              con.getwater.numberofglass!.toInt());
+                        },
+                        text: '+',
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Align(
+                  //     alignment: Alignment.bottomRight,
+                  //     child: InkWell(
+                  //       onTap: () {
+                  //         //water remainder detail button
+                  //         Get.to(() => const WaterInktakeHistoryPage());
+                  //       },
+                  //       child: Text(
+                  //         'See Details',
+                  //         style: Theme.of(context)
+                  //             .textTheme
+                  //             .subtitle2!
+                  //             .copyWith(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 fontWeight: FontWeight.w500),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+
+            SizedBox(height: 1 * SizeConfig.heightMultiplier),
+            // //This section for step counter
+            // Container(
+            //   margin: const EdgeInsets.all(defaultPadding),
+            //   height: 45 * SizeConfig.heightMultiplier,
+            //   width: 100 * SizeConfig.widthMultiplier,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     boxShadow: const [
+            //       BoxShadow(
+            //         color: Colors.black12,
+            //         blurRadius: 18,
+            //       ),
+            //     ],
+            //     borderRadius: BorderRadius.circular(
+            //       defaultBorderRadius,
+            //     ),
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       const SizedBox(height: 10),
+            //       Text('Step Counter',
+            //           style: Theme.of(context).textTheme.subtitle1!.copyWith(
+            //               color: Colors.black, fontWeight: FontWeight.bold)),
+            //       StreamBuilder<AccelerometerEvent>(
+            //         stream: SensorsPlatform.instance.accelerometerEvents,
+            //         builder: (context, snapShort) {
+            //           if (snapShort.hasData) {
+            //             x = snapShort.data!.x;
+            //             y = snapShort.data!.y;
+            //             z = snapShort.data!.z;
+            //             distance = getValue(x, y, z);
+            //             if (distance > 20) {
+            //               steps++;
+            //             }
+            //             calories = calculateCalories(steps);
+            //             miles = calculateMiles(steps);
+            //           }
+            //           return
+            //               // ignore: sized_box_for_whitespace
+            //               Container(
+            //             height: 300,
+            //             width: 400,
+            //             child: SingleChildScrollView(
+            //               child: Column(
+            //                 children: [
+            //                   DashboardCard(steps, miles, calories, duration),
+            //                 ],
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //       const Spacer(),
+            //       // Padding(
+            //       //   padding: const EdgeInsets.only(bottom: 8, right: 8),
+            //       //   child: Align(
+            //       //     alignment: Alignment.bottomRight,
+            //       //     child: InkWell(
+            //       //       onTap: () {
+            //       //         //Step Counter detail button
+            //       //       },
+            //       //       child: Text(
+            //       //         'See Details',
+            //       //         style: Theme.of(context)
+            //       //             .textTheme
+            //       //             .subtitle2!
+            //       //             .copyWith(
+            //       //                 color: Colors.grey.withOpacity(0.5),
+            //       //                 fontWeight: FontWeight.w500),
+            //       //       ),
+            //       //     ),
+            //       //   ),
+            //       // ),
+            //     ],
+            //   ),
+            // ),
+          ],
+        )),
       ),
     );
   }
